@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<%- if options[:latest] -%>
+	<title><%= name %> Example</title>
+	<%- else -%>
+	<title><%= name %> <%= options[:version] %> Example</title>
+	<%- end -%>
+
+	<!-- jQuery -->
+	<script type="text/javascript" src="../javascripts/jquery.js"></script>
+
+	<!-- <%= name %> -->
+	<%- if options[:latest] -%>
+	<link rel="stylesheet" type="text/css" href="../stylesheets/<%= config[:name_dashed] %>.css" />
+	<script type="text/javascript" src="../javascripts/<%= config[:name_dashed] %>.js"></script>
+	<%- else -%>
+	<link rel="stylesheet" type="text/css" href="../stylesheets/<%= config[:name_dashed] %>-<%= options[:version] %>.css" />
+	<script type="text/javascript" src="../javascripts/<%= config[:name_dashed] %>-<%= options[:version] %>.js"></script>
+	<%- end -%>
+
+	<!-- Css -->
+	<style type="text/css">
+
+	</style>
+
+	<!-- Javascript -->
+	<script type="text/javascript">
+		$(function() {
+
+		});
+	</script>
+
+</head>
+<body>
+	<%- if options[:latest] -%>
+	<h2><%= name %> Example</h2>
+	<%- else -%>
+	<h2><%= name %> <%= options[:version] %> Example</h2>
+	<%- end -%>
+	<div>
+		Add example here
+	</div>
+</body>
+</html>

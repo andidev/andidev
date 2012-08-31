@@ -1,0 +1,46 @@
+<%- if options[:latest] -%>
+description "<%= name %> <%= options[:version] %> (latest)"
+<%- else -%>
+description "<%= name %> <%= options[:version] %>"
+<%- end -%>
+
+discover :stylesheets
+discover :images
+discover :javascripts
+discover :fonts
+discover :html
+discover :files
+
+help """
+Source
+	<%= options[:source] %>
+
+Documetation
+	<%= options[:documentation] %>
+
+Compass Dependencies
+	none
+
+Install With Dependencies
+	<%- if options[:latest] -%>
+	compass install <%= config[:name_dashed] %>;
+	<%- else -%>
+	compass install <%= config[:name_dashed] %>/<%= options[:version] %>;
+	<%- end -%>
+
+"""
+
+welcome_message """
+Source
+	<%= options[:source] %>
+
+Documetation
+	<%= options[:documentation] %>
+
+Compass Dependencies
+	none
+
+Install Dependencies
+	n/a
+
+"""

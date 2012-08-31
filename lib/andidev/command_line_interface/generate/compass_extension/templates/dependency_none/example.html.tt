@@ -9,11 +9,19 @@
 
 	<!-- <%= name %> -->
 	<%- if options[:latest] -%>
+		<%- if options[:css] -%>
 	<link rel="stylesheet" type="text/css" href="../stylesheets/<%= config[:name_dashed] %>.css" />
+		<%- end -%>
+		<%- if options[:js] -%>
 	<script type="text/javascript" src="../javascripts/<%= config[:name_dashed] %>.js"></script>
+		<%- end -%>
 	<%- else -%>
+		<%- if options[:css] -%>
 	<link rel="stylesheet" type="text/css" href="../stylesheets/<%= config[:name_dashed] %>-<%= options[:version] %>.css" />
+		<%- end -%>
+		<%- if options[:js] -%>
 	<script type="text/javascript" src="../javascripts/<%= config[:name_dashed] %>-<%= options[:version] %>.js"></script>
+		<%- end -%>
 	<%- end -%>
 
 	<!-- Css -->
@@ -25,7 +33,6 @@
 	<script type="text/javascript">
 
 	</script>
-
 </head>
 <body>
 	<%- if options[:latest] -%>

@@ -16,6 +16,12 @@ Or install it yourself as:
 
     $ gem install andidev
 
+
+## Install local
+	
+	bundle
+	rvmsudo rake install
+
 ## Usage
 
 TODO: Write usage instructions here

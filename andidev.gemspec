@@ -14,4 +14,6 @@ Gem::Specification.new do |gem|
   gem.name          = "andidev"
   gem.require_paths = ["lib"]
   gem.version       = Andidev::VERSION
+
+  gem.add_dependency "thor", '0.16.0'
 end

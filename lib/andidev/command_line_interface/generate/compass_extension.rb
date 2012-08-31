@@ -7,11 +7,15 @@ module Andidev
 			class CompassExtension < Thor::Group
 				include Thor::Actions
 
-				argument :name, :type => :string, :defaut => nil, :desc => "Name of the extension, e.g. My Extension"
-				class_option :version, :aliases => "-v", :type => :string, :desc => "Version of the extension, e.g. 1.8.2 or 2011-12-24"
+				argument :name, :type => :string, :defaut => nil, :desc => "Name of the extension, e.g. My Extension", :required => true
+				class_option :version, :aliases => "-v", :type => :string, :desc => "Version of the extension, e.g. 1.8.2 or 2011-12-24", :required => true
 				class_option :latest, :aliases => "-l", :type => :boolean, :desc => "Create latest (default) version or not", :default => true
 				class_option :dependency, :aliases => "-d", :type => :string, :desc => "Dependency to use [none|jquery|bootstrap]", :default => "none"
-				#class_option :directory, :aliases => "-dir", :type => :boolean, :desc => "Create directory for sub-modules, images and fonrs"
+				class_option :source, :type => :string, :desc => "Source URL", :default => "n/a"
+				class_option :documentation, :type => :string, :desc => "Documentation URL", :default => "n/a"
+				class_option :css, :type => :boolean, :desc => "Has css file", :default => true # TODO: add logic to template and file generation
+				class_option :js, :type => :boolean, :desc => "Has js file", :default => true # TODO: add logic to template and file generation
+				#class_option :directory, :type => :boolean, :desc => "Create directory for sub-modules, images and fonrs"
 
 				class_option :force, :aliases => "-f", :type => :boolean, :desc => "Force creation of files to override existing files"
 				class_option :skip, :aliases => "-s", :type => :boolean, :desc => "Skip creation of existing files"
@@ -34,6 +38,15 @@ module Andidev
 						@version_directory = options[:version]
 					end
 				end
+
+				# def ask_for_source_url
+				# 	@variables[:source] = ask 'Source URL: '
+				# 	say @variables[:source]
+				# end
+
+				# def ask_for_documentation_url
+				# 	@variables[:documentation] = ask 'Documetation URL: '
+				# end
 
 				def clean
 					if options[:clean]
@@ -66,37 +79,74 @@ module Andidev
 				end
 
 				def create_scss
-					file_name = "#{@variables[:name_dashed]}/templates/#{@version_directory}/#{@variables[:name_dashed]}.scss"
-					create_file file_name, "Place \"#{name}\" SCSS here"
+					if options[:css]
+						if options[:latest]
+							file_name = "#{@variables[:name_dashed]}/templates/#{@version_directory}/#{@variables[:name_dashed]}.scss"
+						else
+							file_name = "#{@variables[:name_dashed]}/templates/#{@version_directory}/#{@variables[:name_dashed]}-#{options[:version]}.scss"
+						end
+						create_file file_name, "Place \"#{name}\" SCSS here"
+					end
 				end
 
 				def create_scss_sub_module_help_file
-					file_name = "#{@variables[:name_dashed]}/templates/#{@version_directory}/#{@variables[:name_dashed]}/place-scss-sub-modules-here"
-					create_file file_name, "Place \"#{name}\" SCSS sub modules in this folder" if options[:help_files]
+					if options[:js]
+						if options[:latest]
+							file_name = "#{@variables[:name_dashed]}/templates/#{@version_directory}/#{@variables[:name_dashed]}/place-scss-sub-modules-here"
+						else
+							file_name = "#{@variables[:name_dashed]}/templates/#{@version_directory}/#{@variables[:name_dashed]}-#{options[:version]}/place-scss-sub-modules-here"
+						end
+						create_file file_name, "Place \"#{name}\" SCSS sub modules in this folder" if options[:help_files]
+					end
 				end
 
 				def create_javascript
-					file_name = "#{@variables[:name_dashed]}/templates/#{@version_directory}/#{@variables[:name_dashed]}.js"
-					create_file file_name, "Place \"#{name}\" JavaScript here"
+					if options[:js]
+						if options[:latest]
+							file_name = "#{@variables[:name_dashed]}/templates/#{@version_directory}/#{@variables[:name_dashed]}.js"
+						else
+							file_name = "#{@variables[:name_dashed]}/templates/#{@version_directory}/#{@variables[:name_dashed]}-#{options[:version]}.js"
+						end
+						create_file file_name, "Place \"#{name}\" JavaScript here"
+					end
 				end
 
-				def create_javascript
-					file_name = "#{@variables[:name_dashed]}/templates/#{@version_directory}/#{@variables[:name_dashed]}/place-javascript-sub-modules-here"
+				def create_javascript_sub_module_help_file
+					if options[:js]
+						if options[:latest]
+							file_name = "#{@variables[:name_dashed]}/templates/#{@version_directory}/#{@variables[:name_dashed]}/place-javascript-sub-modules-here"
+						else
+							file_name = "#{@variables[:name_dashed]}/templates/#{@version_directory}/#{@variables[:name_dashed]}-#{options[:version]}/place-javascript-sub-modules-here"
+						end
+					end
+
 					create_file file_name, "Place \"#{name}\" JavaScript sub modules in this folder" if options[:help_files]
 				end
 
 				def create_images_help_file
-					file_name = "#{@variables[:name_dashed]}/templates/#{@version_directory}/#{@variables[:name_dashed]}/place-images-here"
+					if options[:latest]
+						file_name = "#{@variables[:name_dashed]}/templates/#{@version_directory}/#{@variables[:name_dashed]}/place-images-here"
+					else
+						file_name = "#{@variables[:name_dashed]}/templates/#{@version_directory}/#{@variables[:name_dashed]}-#{options[:version]}/place-images-here"
+					end
 					create_file file_name, "" if options[:help_files]
 				end
 
 				def create_fonts_help_file
-					file_name = "#{@variables[:name_dashed]}/templates/#{@version_directory}/#{@variables[:name_dashed]}/place-fonts-here"
+					if options[:latest]
+						file_name = "#{@variables[:name_dashed]}/templates/#{@version_directory}/#{@variables[:name_dashed]}/place-fonts-here"
+					else
+						file_name = "#{@variables[:name_dashed]}/templates/#{@version_directory}/#{@variables[:name_dashed]}-#{options[:version]}/place-fonts-here"
+					end
 					create_file file_name, "" if options[:help_files]
 				end
 
 				def create_example
-					file_name = "#{@variables[:name_dashed]}/templates/#{@version_directory}/examples/#{@variables[:name_dashed]}-example.html"
+					if options[:latest]
+						file_name = "#{@variables[:name_dashed]}/templates/#{@version_directory}/examples/#{@variables[:name_dashed]}-example.html"
+					else
+						file_name = "#{@variables[:name_dashed]}/templates/#{@version_directory}/examples/#{@variables[:name_dashed]}-#{options[:version]}-example.html"
+					end
 					case options[:dependency]
 				 		when "bootstrap"
 							template "dependency_bootstrap/example.html.tt", file_name, @variables
